@@ -1,0 +1,55 @@
+# Copyright (C) clang-retro contributors.
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# Build unicows.dll with the nightly clang-dos toolchain, check that it
+# imports only what Windows 95 has, and run the tests in Wine.
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: clang-retro/win32-sdk
+          path: win32-sdk
+          persist-credentials: false
+      - name: Toolchain
+        run: |
+          curl -fsSL -o tc.tar.xz \
+            https://github.com/clang-retro/dos-sdk/releases/download/nightly/clang-dos-linux-x86_64.tar.xz
+          mkdir -p "$RUNNER_TEMP/tc"
+          tar -xJf tc.tar.xz -C "$RUNNER_TEMP/tc"
+          dir=$(dirname "$(find "$RUNNER_TEMP/tc" -path '*/bin/clang' | head -n1)")
+          echo "BIN=$dir" >> "$GITHUB_ENV"
+          echo "SYSROOT=$(dirname "$dir")/sysroots/win9x-msvcrt" >> "$GITHUB_ENV"
+      - name: Wine
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends wine wine32:i386 xvfb xauth
+      - name: Build
+        run: OUT=$PWD/build sh build.sh
+      - name: Check the imports against Windows 95
+        run: python3 win32-sdk/tools/check-imports.py build/unicows.dll
+      - name: Test
+        run: OUT=$PWD/build sh tests/run.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unicows
+          path: |
+            build/unicows.dll
+            build/opencow.dll
+            build/libunicows-dll.a

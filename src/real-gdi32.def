@@ -1,0 +1,13 @@
+; Copyright (C) clang-retro contributors.
+; SPDX-License-Identifier: AGPL-3.0-only
+;
+; Imports of the system functions that opencow also exports, under
+; names of their own (see OW_REAL_DECL in ow.h).
+LIBRARY GDI32.dll
+EXPORTS
+ow_ExtTextOutW@32 == ExtTextOutW
+ow_GetCharWidthW@16 == GetCharWidthW
+ow_GetTextExtentExPointW@28 == GetTextExtentExPointW
+ow_GetTextExtentPoint32W@16 == GetTextExtentPoint32W
+ow_GetTextExtentPointW@16 == GetTextExtentPointW
+ow_TextOutW@20 == TextOutW
