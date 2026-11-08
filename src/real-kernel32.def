@@ -1,0 +1,12 @@
+; Copyright (C) clang-retro contributors.
+; SPDX-License-Identifier: AGPL-3.0-only
+;
+; Imports of the system functions that opencow also exports, under
+; names of their own (see OW_REAL_DECL in ow.h).
+LIBRARY KERNEL32.dll
+EXPORTS
+ow_GetCPInfo@8 == GetCPInfo
+ow_GetProcAddress@8 == GetProcAddress
+ow_IsValidCodePage@4 == IsValidCodePage
+ow_MultiByteToWideChar@24 == MultiByteToWideChar
+ow_WideCharToMultiByte@32 == WideCharToMultiByte

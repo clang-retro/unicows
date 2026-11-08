@@ -1,0 +1,22 @@
+; Copyright (C) clang-retro contributors.
+; SPDX-License-Identifier: AGPL-3.0-only
+;
+; Imports of the system functions that opencow also exports, under
+; names of their own (see OW_REAL_DECL in ow.h).
+LIBRARY USER32.dll
+EXPORTS
+ow_CallWindowProcA@20 == CallWindowProcA
+ow_DdeConnect@16 == DdeConnect
+ow_DdeConnectList@20 == DdeConnectList
+ow_DdeQueryConvInfo@12 == DdeQueryConvInfo
+ow_EnableWindow@8 == EnableWindow
+ow_EnumClipboardFormats@4 == EnumClipboardFormats
+ow_EnumPropsA@8 == EnumPropsA
+ow_EnumPropsExA@12 == EnumPropsExA
+ow_GetClipboardData@4 == GetClipboardData
+ow_GetPropA@8 == GetPropA
+ow_GetWindowLongA@8 == GetWindowLongA
+ow_IsClipboardFormatAvailable@4 == IsClipboardFormatAvailable
+ow_RemovePropA@8 == RemovePropA
+ow_SetPropA@12 == SetPropA
+ow_SetWindowLongA@12 == SetWindowLongA
